@@ -3,10 +3,8 @@ from diagrams.custom import Custom
 from diagrams.onprem.database import PostgreSQL
 from diagrams.onprem.network import Nginx
 from diagrams.programming.language import Java
-from diagrams.saas.identity import Auth0
 from diagrams.programming.framework import React, Spring
 from diagrams.saas.automation import N8N
-from diagrams.onprem.workflow import Airflow
 
 graph_attr = {
     "fontsize": "16",
