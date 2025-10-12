@@ -8,32 +8,6 @@ from diagrams.programming.framework import React, Spring
 from diagrams.saas.automation import N8N
 from diagrams.onprem.workflow import Airflow
 
-with Diagram("Arquitectura de despliegue", show=False, outformat='png'):
-    with Cluster("Web Server"):
-        react = React("React + Vite")
-
-    with Cluster("Backend"):
-        spring = Spring("Spring Boot REST Service")
-
-    with Cluster("Database"):
-        db = PostgreSQL("Postgres DB")
-
-   
-    with Cluster("External Services"):
-        n8n = N8N("SMPT Service")
-
-    nginx_proxy = Nginx("nginx-proxy")
-
-    # Requests normales
-    react >> Edge(label="3. Request + JWT") >> nginx_proxy
-    nginx_proxy >> Edge(label="Forward") >> spring
-
-    # Operaciones backend
-    spring >> Edge(label="Query") >> db
-    spring >> Edge(label="Trigger Email Validation") >> n8n
-
-    n8n >> spring
-
 graph_attr = {
     "fontsize": "16",
     "bgcolor": "white",
@@ -79,7 +53,3 @@ with Diagram("Arquitectura de Aplicación",
     spring >> Edge(label="Trigger") >> n8n
     spring - Edge(label="uses", style="dashed") - jwt
     spring - Edge(label="uses", style="dashed") - business
-    
-    # Respuestas (opcional, para mostrar flujo bidireccional)
-    # nginx_proxy << spring
-    # react << nginx_proxy   
