@@ -1,5 +1,0 @@
-@startuml 
-User -[hidden]-( Administrator : "Use Cases" : Message Box
-User -( Request Use Case )- Message Box
-Administrator -( Approve/Reject Use Case )- Message Box
-@enduml
