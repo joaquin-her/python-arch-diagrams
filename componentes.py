@@ -34,13 +34,8 @@ with Diagram("Arquitectura de Aplicación",
             with Cluster("Servicios Internos"):
                 jwt = Java("JWT Service\n(Spring Security)")
                 business = Java("Business Logic")
-        
+                
         db = PostgreSQL("PostgreSQL\nDatabase")
-    
-    # Servicio externo
-    with Cluster("External Services"):
-        n8n = Custom("n8n Workflow", "icons/n8n.png") if False else \
-              N8N("Mail Validation\nWorkflow")
     
     # Flujo de comunicación
     react >> Edge(label="HTTPS") >> nginx_proxy
@@ -48,6 +43,5 @@ with Diagram("Arquitectura de Aplicación",
     
     # Spring Boot interacciones
     spring >> Edge(label="SQL Query") >> db
-    spring >> Edge(label="Trigger") >> n8n
     spring - Edge(label="uses", style="dashed") - jwt
     spring - Edge(label="uses", style="dashed") - business
