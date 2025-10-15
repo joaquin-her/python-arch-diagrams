@@ -6,6 +6,9 @@ graph = {
     "pad": "0.5",
     "splines": "ortho",
 }
+"""
+Modelos de dominio, glosarios, diagramas de alto nivel, etc
+"""
 with Diagram("Vista Logica", 
              show=False, 
              outformat='png', 
