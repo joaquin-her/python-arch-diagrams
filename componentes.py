@@ -12,36 +12,39 @@ graph_attr = {
     "pad": "0.5",
     "splines": "ortho"  # Líneas más ordenadas
 }
-with Diagram("Arquitectura de Aplicación", 
+with Diagram("Vista fisica", 
              show=False, 
              outformat='png',
              graph_attr=graph_attr,
              direction="LR"):
     
     # Frontend
-    with Cluster("Frontend"):
-        react = React("React Client")
-    
-    # Reverse Proxy (entre Frontend y Backend)
-    nginx_proxy = Nginx("nginx-proxy\n(Reverse Proxy)")
+    with Cluster("User Devices"):
+        with Cluster("App"):
+            react = React("React Client")
     
     # Backend
-    with Cluster("Backend - Spring Boot"):
-        with Cluster("Spring Boot Application"):
-            spring = Spring("REST API")
+    with Cluster("Server"):
+        with Cluster("Docker Network"):
+            # Reverse Proxy (entre Frontend y Backend)
+            with Cluster("Reverse Proxy"):
+                nginx_proxy = Nginx("Nginx Proxy Instance")
             
-            # Componentes internos de Spring Boot
-            with Cluster("Servicios Internos"):
-                jwt = Java("JWT Service\n(Spring Security)")
-                business = Java("Business Logic")
+            with Cluster("Spring Boot Application"):
+                spring = Spring("REST API")
                 
-        db = PostgreSQL("PostgreSQL\nDatabase")
-    
+                # # Componentes internos de Spring Boot
+                # with Cluster("Servicios Internos"):
+                #     jwt = Java("JWT Service\n(Spring Security)")
+                #     business = Java("Business Logic")
+            with Cluster("SQL Database"):
+                db = PostgreSQL("PostgreSQL\n Instance")
+        
     # Flujo de comunicación
     react >> Edge(label="HTTPS") >> nginx_proxy
     nginx_proxy >> Edge(label="HTTP") >> spring
     
     # Spring Boot interacciones
     spring >> Edge(label="SQL Query") >> db
-    spring - Edge(label="uses", style="dashed") - jwt
-    spring - Edge(label="uses", style="dashed") - business
+    #spring - Edge(label="uses", style="dashed") - jwt
+    #spring - Edge(label="uses", style="dashed") - business
