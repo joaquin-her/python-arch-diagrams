@@ -15,7 +15,7 @@ icon_orden = "icons/atender.png"
 icon_ingrediente = "icons/exportar.png"
 icon_stock = "icons/gestion-de-productos.png"
 icon_administrador = "icons/usuario.png"
-
+icon_entregas = "icons/entregas.png"
 """
 Modelos de dominio, glosarios, diagramas de alto nivel, etc
 """
@@ -40,6 +40,7 @@ with Diagram("Vista Dominio",
 
     with Cluster("Servicio a Empleados"):
         orden = Custom("Orden", icon_orden)
+        entregas = Custom("Pedidos", icon_entregas)
         cocinero = Custom("Cocineros", icon_usuario)
     
 
@@ -53,7 +54,8 @@ with Diagram("Vista Dominio",
     orden >> Edge(label="contiene 1 o varias")  >> producto
     orden >> Edge(label="contiene 1 o varias")  >> promocion
 
-    cocinero >> Edge(label="Preparan") >> orden
+    cocinero >> Edge(label="Controlan el estado") >> entregas
+    entregas >> Edge(label="contiene varias") >> orden
 
     ingrediente >> Edge(label="Es usado en") >> producto
     stock >> Edge(label="contiene las cantidades de todos") >> ingrediente
