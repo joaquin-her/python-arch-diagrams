@@ -4,14 +4,13 @@ from diagrams.aws.network import ELB
 from diagrams.aws.database import RDS
 from diagrams import Diagram, Cluster, Edge
 from diagrams.generic.os import Android, IOS, Windows
-from diagrams.aws.network import Route53
+from diagrams.aws.network import APIGateway
 
 
 with Diagram("diagrama_de_procesos", show=False, outformat='png', direction='LR', curvestyle="curved"):
     
     # Define the load balancer and backend servers
-    lb = ELB("Load Balancer")
-    dns = Route53("DNS")
+    lb = APIGateway("Reverse Proxy")
     api_server = EC2("API Server (Backend)")
     frontend_server = EC2("Frontend Server")
     
@@ -24,12 +23,9 @@ with Diagram("diagrama_de_procesos", show=False, outformat='png', direction='LR'
     ios_user_mgmt = IOS("User (iOS)")
 
     # Connect user management to backend servers
-    android_user_mgmt >> dns
-    web_user_mgmt >> Edge(label="Morfiuba.com") >> dns
-    ios_user_mgmt >> dns
-
-    # connect dns to load balancer
-    dns >> Edge(label="Redirect to API Server") >> lb
+    android_user_mgmt >> lb
+    web_user_mgmt >> Edge(label="Morfiuba.com") >> lb
+    ios_user_mgmt >> lb
 
     
     # Define ports for communication
@@ -40,4 +36,3 @@ with Diagram("diagrama_de_procesos", show=False, outformat='png', direction='LR'
     
     # Define ports for database connections
     api_server >> Edge(label="PostgreSQL, Port 5432") >> db_server
-    frontend_server >> db_server
